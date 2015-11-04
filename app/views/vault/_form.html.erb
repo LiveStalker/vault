@@ -1,0 +1,9 @@
+<%= error_messages_for @worklog %>
+
+<div class="box tabular">
+  <fieldset>
+    <legend>Activities</legend>
+    <p><%= f.text_field :host, :require => false, :value => "#{@vault.host || 'host name'}" %></p>
+  </fieldset>
+</div>
+

@@ -1,0 +1,9 @@
+<%= render :partial => "nav" %>
+
+<h2>Add new password</h2>
+
+
+<%= labelled_form_for @vault, :url => vault_path, :html => {:id => 'vault-form'} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+    <%= submit_tag 'Create' %>
+<% end %>

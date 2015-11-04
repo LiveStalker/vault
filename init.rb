@@ -1,8 +1,13 @@
 Redmine::Plugin.register :password_vault do
   name 'Password Vault plugin'
-  author 'Author name'
-  description 'This is a plugin for Redmine'
+  author 'Alexey V. Grebenshchikov'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
-  author_url 'http://example.com/about'
+
+  permission :vault, { :vault => [:index] }, :public => true
+  menu :project_menu,
+       :vault,
+       {:controller => 'vault', :action => 'index'},
+       :caption => 'Vault',
+       :after => :settings,
+       :param => :project_id
 end
