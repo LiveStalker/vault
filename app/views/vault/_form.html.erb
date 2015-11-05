@@ -1,9 +1,12 @@
 <%= error_messages_for @worklog %>
 
 <div class="box tabular">
+  <p><%= f.text_field :host, :require => false, :value => "#{@vault.host || 'hostname'}" %></p>
+  <p><%= f.text_field :login, :require => true, :value => "#{@vault.login || 'login'}" %></p>
+  <p><%= f.text_field :password, :require => true, :value => "#{@vault.password || 'password'}" %></p>
+  <p><%= f.text_area :notes, :required => false, :cols => 40, :value => "#{@vault.notes || ''}",:rows => 15, :class => 'wiki-edit' %></p>
   <fieldset>
     <legend>Activities</legend>
-    <p><%= f.text_field :host, :require => false, :value => "#{@vault.host || 'host name'}" %></p>
   </fieldset>
 </div>
 

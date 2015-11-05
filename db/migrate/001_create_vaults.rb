@@ -4,8 +4,9 @@ class CreateVaults < ActiveRecord::Migration
       t.string :host
       t.string :login
       t.string :password
-      t.boolean :shared
+      t.boolean :private
       t.integer :user_id
+      t.string :project_id
       t.string :notes
     end
   end
