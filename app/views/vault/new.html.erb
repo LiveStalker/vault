@@ -2,6 +2,7 @@
 
 <h2>Add new password</h2>
 
+<%= @project %>
 
 <%= labelled_form_for @vault, :url => vault_path, :html => {:id => 'vault-form'} do |f| %>
     <%= render :partial => 'form', :locals => {:f => f} %>

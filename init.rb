@@ -13,5 +13,6 @@ Redmine::Plugin.register :password_vault do
 
   project_module :vault do
     permission :view_vault, :vault => :index
+    permission :add_vault, :vault => :new
   end
 end

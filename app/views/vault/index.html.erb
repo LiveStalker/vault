@@ -1,29 +1,30 @@
 <%= render :partial => 'nav' %>
 
 <h2>Password Vault</h2>
-
-<div class="autoscroll">
-  <table class="list vault">
-    <thead>
-    <tr>
-      <th>Login</th>
-      <th>Password</th>
-      <th>Created</th>
-      <th>Updated</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>Test</td>
-      <td>Test</td>
-      <td>Test</td>
-      <td>Test</td>
-      <td>
-        <a href="#" class="icon icon-edit">Edit</a>
-        <a href="#" class="icon icon-del">Delete</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<% unless @master_password %>
+    <div class="autoscroll">
+      <table class="list vault">
+        <thead>
+        <tr>
+          <th>Login</th>
+          <th>Password</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Test</td>
+          <td>Test</td>
+          <td>Test</td>
+          <td>Test</td>
+          <td>
+            <a href="#" class="icon icon-edit">Edit</a>
+            <a href="#" class="icon icon-del">Delete</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+<% end %>

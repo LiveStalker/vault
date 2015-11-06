@@ -1,10 +1,19 @@
 class VaultController < ApplicationController
   unloadable
 
-  before_filter :find_project, :authorize, :only => :index
+  before_filter :find_project, :authorize
 
   def index
-
+    #check that master password exist
+    @master_password = MasterPassword.find_by(:project_id => @project.identifier)
+    if @master_password.nil?
+      if User.current.admin?
+        redirect_to new_project_master_path
+      else
+        flash[:error] = 'Master password not found!'
+        flash[:notice] = 'Ask the administrator to set a master password!'
+      end
+    end
   end
 
   def new
