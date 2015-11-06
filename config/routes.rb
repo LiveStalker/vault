@@ -1,9 +1,9 @@
-get 'vault', :to => 'vault#index'
+get 'vaults', :to => 'vaults#index'
 
 resources :projects do
-  resources :vault
+  resources :vaults
 end
 
 resources :projects do
-  resources :master
+  resources :masters
 end

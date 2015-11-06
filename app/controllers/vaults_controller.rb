@@ -1,4 +1,4 @@
-class VaultController < ApplicationController
+class VaultsController < ApplicationController
   unloadable
 
   before_filter :find_project, :authorize
@@ -8,6 +8,7 @@ class VaultController < ApplicationController
     @master_password = MasterPassword.find_by(:project_id => @project.identifier)
     if @master_password.nil?
       if User.current.admin?
+        flash[:notice] = 'Create new master password for encrypting vault!'
         redirect_to new_project_master_path
       else
         flash[:error] = 'Master password not found!'

@@ -3,16 +3,16 @@ Redmine::Plugin.register :password_vault do
   author 'Alexey V. Grebenshchikov'
   version '0.0.1'
 
-  #permission :vault, { :vault => [:index] }, :public => true
   menu :project_menu,
-       :vault,
-       {:controller => 'vault', :action => 'index'},
+       :vaults,
+       {:controller => 'vaults', :action => 'index'},
        :caption => 'Vault',
        :after => :settings,
        :param => :project_id
 
-  project_module :vault do
-    permission :view_vault, :vault => :index
-    permission :add_vault, :vault => :new
+  project_module :vaults do
+    permission :view_vault, :vaults => :index
+    permission :add_vault, :vaults => [:new, :create]
+    permission :master_password, :masters => [:new, :create]
   end
 end
