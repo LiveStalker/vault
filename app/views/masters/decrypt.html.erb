@@ -1,0 +1,7 @@
+<%= labelled_form_for @master_password, :url => '/projects/' + @project.identifier + '/decrypt', :html => {:id => 'master-form'} do |f| %>
+    <%= error_messages_for @master_password %>
+    <div class="box tabular">
+      <p><%= f.text_field :password, :require => true, :value => '' %></p>
+    </div>
+    <%= submit_tag 'Decrypt' %>
+<% end %>

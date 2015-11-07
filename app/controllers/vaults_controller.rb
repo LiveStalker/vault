@@ -18,6 +18,11 @@ class VaultsController < ApplicationController
       end
     else
       # master password exist
+      master = Rails.cache.read(:master)
+      if master.nil?
+        # no master in cache
+        redirect_to '/projects/' + @project.identifier + '/decrypt'
+      end
     end
   end
 

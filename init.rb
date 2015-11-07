@@ -11,8 +11,8 @@ Redmine::Plugin.register :password_vault do
        :param => :project_id
 
   project_module :vaults do
-    permission :view_vault, :vaults => :index
-    permission :add_vault, :vaults => [:new, :create]
-    permission :master_password, :masters => [:new, :create]
+    permission :view_passwords, {:vaults => :index, :master => [:decrypt, :decrypt_post]}
+    permission :add_passwords, {:vaults => [:new, :create]}
+    permission :master_password, {:masters => [:new, :create, :decrypt, :decrypt_post]}
   end
 end
