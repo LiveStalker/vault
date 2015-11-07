@@ -1,3 +1,4 @@
+require 'digest/md5'
 class VaultsController < ApplicationController
   unloadable
 
@@ -5,8 +6,9 @@ class VaultsController < ApplicationController
 
   def index
     #check that master password exist
-    @master_password = MasterPassword.find_by(:project_id => @project.identifier)
+    @master_password = MasterPassword.find_by(:project_id => @project)
     if @master_password.nil?
+      # master password dose not exist
       if User.current.admin?
         flash[:notice] = 'Create new master password for encrypting vault!'
         redirect_to new_project_master_path
@@ -14,8 +16,11 @@ class VaultsController < ApplicationController
         flash[:error] = 'Master password not found!'
         flash[:notice] = 'Ask the administrator to set a master password!'
       end
+    else
+      # master password exist
     end
   end
+
 
   def new
     @vault = Vault.new()

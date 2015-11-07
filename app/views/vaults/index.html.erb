@@ -1,7 +1,7 @@
 <%= render :partial => 'nav' %>
 
 <h2>Password Vault</h2>
-<% unless @master_password %>
+<% if @master_password %>
     <div class="autoscroll">
       <table class="list vault">
         <thead>

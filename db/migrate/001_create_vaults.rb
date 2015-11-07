@@ -6,7 +6,7 @@ class CreateVaults < ActiveRecord::Migration
       t.string :password
       t.boolean :private
       t.integer :user_id
-      t.string :project_id
+      t.integer :project_id
       t.string :notes
     end
   end
