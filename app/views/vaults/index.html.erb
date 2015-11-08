@@ -19,7 +19,10 @@
             <tr>
               <td><%= password.host %></td>
               <td><%= password.login %></td>
-              <td><%= password.password %></td>
+              <td>
+                <span class="vault-password"><%= password.password %></span>
+                <a href="#" title="copy" class="icon icon-copy"></a><a href="#" title="show" class="icon icon-unlock"></a>
+              </td>
               <td><%= password.user %></td>
               <td><%= password.notes %></td>
               <td>
