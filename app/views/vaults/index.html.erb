@@ -23,7 +23,7 @@
               <td><%= password.user %></td>
               <td><%= password.notes %></td>
               <td>
-                <a href="#" class="icon icon-edit">Edit</a>
+                <%= link_to "", {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
                 <a href="#" class="icon icon-del">Delete</a>
               </td>
             </tr>

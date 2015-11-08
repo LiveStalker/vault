@@ -51,11 +51,24 @@ class VaultsController < ApplicationController
   end
 
   def update
-
+    @vault = Vault.find(params[:id])
+    @vault.update_attributes(vault_params)
+    if request.patch? and @vault.save
+      flash[:notice] = 'Password successfully updated.'
+      redirect_to project_vaults_path
+    else
+      render :action => 'edit', :id => @vault.id
+    end
   end
 
   def edit
-
+    @master = Rails.cache.read(:master)
+    if @master.nil?
+      # no master in cache
+      redirect_to '/projects/' + @project.identifier + '/decrypt'
+    else
+      @vault = Vault.find(params[:id])
+    end
   end
 
   def destroy

@@ -10,8 +10,5 @@
   <p><%= f.text_area :notes, :required => false, :cols => 40, :value => "#{@vault.notes || ''}", :rows => 15, :class => 'wiki-edit' %></p>
 
   <p><%= f.hidden_field :master, :required => true, :value => "#{@master}" %></p>
-  <fieldset>
-    <legend>Activities</legend>
-  </fieldset>
 </div>
 
