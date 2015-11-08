@@ -6,24 +6,28 @@
       <table class="list vault">
         <thead>
         <tr>
+          <th>Host</th>
           <th>Login</th>
           <th>Password</th>
-          <th>Created</th>
-          <th>Updated</th>
+          <th>Who create</th>
+          <th>Notes</th>
           <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>Test</td>
-          <td>
-            <a href="#" class="icon icon-edit">Edit</a>
-            <a href="#" class="icon icon-del">Delete</a>
-          </td>
-        </tr>
+        <% @vault_passwords.each do |password| %>
+            <tr>
+              <td><%= password.host %></td>
+              <td><%= password.login %></td>
+              <td><%= password.password %></td>
+              <td><%= password.user %></td>
+              <td><%= password.notes %></td>
+              <td>
+                <a href="#" class="icon icon-edit">Edit</a>
+                <a href="#" class="icon icon-del">Delete</a>
+              </td>
+            </tr>
+        <% end %>
         </tbody>
       </table>
     </div>

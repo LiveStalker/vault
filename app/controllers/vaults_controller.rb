@@ -22,17 +22,32 @@ class VaultsController < ApplicationController
       if master.nil?
         # no master in cache
         redirect_to '/projects/' + @project.identifier + '/decrypt'
+      else
+        @vault_passwords = Vault.where(:project => @project).all
       end
     end
   end
 
 
   def new
-    @vault = Vault.new()
+    @master = Rails.cache.read(:master)
+    if @master.nil?
+      # no master in cache
+      redirect_to '/projects/' + @project.identifier + '/decrypt'
+    else
+      @vault = Vault.new()
+    end
   end
 
   def create
-
+    @vault = Vault.new(vault_params)
+    @vault.project = @project
+    @vault.user = User.current
+    @vault.private = false
+    if @vault.save
+      flash[:notice] = 'Password successfully added to vault.'
+      redirect_to project_vaults_path
+    end
   end
 
   def update
@@ -45,6 +60,10 @@ class VaultsController < ApplicationController
 
   def destroy
 
+  end
+
+  def vault_params
+    params.require(:vault).permit(:host, :login, :password, :notes)
   end
 
   def find_project
