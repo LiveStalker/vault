@@ -12,8 +12,10 @@ class MastersController < ApplicationController
   # create new master password for project vault
   def create
     passwords = params[:master_password]
+    logger.info(passwords)
     if passwords[:password] == passwords[:password_repeat]
       digest = Digest::MD5.hexdigest(master_params[:password])
+      logger.info(digest)
       @master_password = MasterPassword.new(:password => digest)
       @master_password.project = @project
       @master_password.save()
