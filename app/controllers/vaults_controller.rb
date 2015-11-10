@@ -51,13 +51,13 @@ class VaultsController < ApplicationController
     @vault.project = @project
     @vault.user = User.current
     @vault.private = false
+    # refresh cache
+    Rails.cache.write(:master, master, expires_in: 1.minute)
     if @vault.save
-      # refresh cache
-      Rails.cache.write(:master, master, expires_in: 1.minute)
       flash[:notice] = 'Password successfully added to vault.'
       redirect_to project_vaults_path
     else
-      render :action => 'new'
+      render :new
     end
   end
 
@@ -68,9 +68,9 @@ class VaultsController < ApplicationController
     obj_params[:login] = vault_encrypt(obj_params[:login], master)
     obj_params[:password] = vault_encrypt(obj_params[:password], master)
     @vault.assign_attributes(obj_params)
+    # refresh cache
+    Rails.cache.write(:master, master, expires_in: 1.minute)
     if @vault.valid? and (request.patch? and @vault.save)
-      # refresh cache
-      Rails.cache.write(:master, master, expires_in: 1.minute)
       flash[:notice] = 'Password successfully added to vault.'
       flash[:notice] = 'Password successfully updated.'
       redirect_to project_vaults_path
@@ -102,10 +102,12 @@ class VaultsController < ApplicationController
   end
 
   def vault_decrypt(value, cipher_key)
-    cipher = OpenSSL::Cipher.new('aes-256-cbc')
-    cipher.decrypt
-    cipher.key = Digest::SHA2.digest cipher_key
-    cipher.update(Base64.decode64(value.to_s)) + cipher.final
+    if value.to_s != ''
+      cipher = OpenSSL::Cipher.new('aes-256-cbc')
+      cipher.decrypt
+      cipher.key = Digest::SHA2.digest cipher_key
+      cipher.update(Base64.decode64(value.to_s)) + cipher.final
+    end
   end
 
   def vault_encrypt(value, cipher_key)

@@ -1,12 +1,12 @@
 <%= error_messages_for @vault %>
 
 <div class="box tabular">
-  <p><%= f.text_field :host, :require => false, :value => "#{@vault.host || 'hostname'}" %></p>
+  <p><%= f.text_field :host, :require => false, :value => "#{@vault.host || ''}" %></p>
 
   <% if @vault.id.nil? %>
-      <p><%= f.text_field :login, :require => true, :value => 'login' %></p>
+      <p><%= f.text_field :login, :require => true, :value => "#{@vault.login || ''}" %></p>
 
-      <p><%= f.text_field :password, :require => true, :value => 'password' %></p>
+      <p><%= f.text_field :password, :require => true, :value => "#{@vault.password || ''}" %></p>
   <% else %>
       <p><%= f.text_field :login, :require => true, :value => "#{vault_decrypt(@vault.login, @master)}" %></p>
 
