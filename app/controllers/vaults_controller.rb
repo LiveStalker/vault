@@ -43,39 +43,48 @@ class VaultsController < ApplicationController
   end
 
   def create
-    master = params[:vault][:master]
-    obj_params = vault_params
-    obj_params[:login] = vault_encrypt(obj_params[:login], master)
-    obj_params[:password] = vault_encrypt(obj_params[:password], master)
-    @vault = Vault.new(obj_params)
+    @master = params[:vault][:master]
+    form_params = vault_params
+    # encrypt login and password
+    form_params[:login] = vault_encrypt(form_params[:login], @master)
+    form_params[:password] = vault_encrypt(form_params[:password], @master)
+    @vault = Vault.new(form_params)
     @vault.project = @project
     @vault.user = User.current
     @vault.private = false
     # refresh cache
-    Rails.cache.write(:master, master, expires_in: 1.minute)
+    Rails.cache.write(:master, @master, expires_in: 1.minute)
     if @vault.save
+      # save successfully
       flash[:notice] = 'Password successfully added to vault.'
       redirect_to project_vaults_path
     else
+      # validation fail
+      @vault.login = vault_decrypt(@vault.login, @master)
+      @vault.password = vault_decrypt(@vault.password, @master)
       render :new
     end
   end
 
   def update
     @vault = Vault.find(params[:id])
-    master = params[:vault][:master]
-    obj_params = vault_params
-    obj_params[:login] = vault_encrypt(obj_params[:login], master)
-    obj_params[:password] = vault_encrypt(obj_params[:password], master)
-    @vault.assign_attributes(obj_params)
+    @master = params[:vault][:master]
+    form_params = vault_params
+    form_params[:login] = vault_encrypt(form_params[:login], @master)
+    form_params[:password] = vault_encrypt(form_params[:password], @master)
+    @vault.assign_attributes(form_params)
     # refresh cache
-    Rails.cache.write(:master, master, expires_in: 1.minute)
+    Rails.cache.write(:master, @master, expires_in: 1.minute)
     if @vault.valid? and (request.patch? and @vault.save)
+      # save successfully
       flash[:notice] = 'Password successfully added to vault.'
       flash[:notice] = 'Password successfully updated.'
       redirect_to project_vaults_path
     else
-      render :action => 'edit', :id => @vault.id
+      # validation fail
+      @vault.login = vault_decrypt(@vault.login, @master)
+      @vault.password = vault_decrypt(@vault.password, @master)
+      render :edit
     end
   end
 
@@ -86,6 +95,8 @@ class VaultsController < ApplicationController
       redirect_to '/projects/' + @project.identifier + '/decrypt'
     else
       @vault = Vault.find(params[:id])
+      @vault.login = vault_decrypt(@vault.login, @master)
+      @vault.password = vault_decrypt(@vault.password, @master)
     end
   end
 
