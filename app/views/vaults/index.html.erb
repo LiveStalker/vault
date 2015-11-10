@@ -21,13 +21,13 @@
               <td><%= vault_decrypt(password.login, @master) %></td>
               <td>
                 <span class="vault-password"><%= vault_decrypt(password.password, @master) %></span>
-                <a href="#" title="copy" class="icon icon-copy password-copy"></a><a href="#" title="show/hide" class="icon icon-unlock password-lock"></a>
+                <!--a href="#" title="copy" class="icon icon-copy password-copy"></a--><a href="#" title="show/hide" class="icon icon-unlock password-lock"></a>
               </td>
               <td><%= password.user %></td>
               <td><%= password.notes %></td>
               <td>
                 <%= link_to "", {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
-                <a href="#" class="icon icon-del">Delete</a>
+                <!--a href="#" class="icon icon-del">Delete</a-->
               </td>
             </tr>
         <% end %>
