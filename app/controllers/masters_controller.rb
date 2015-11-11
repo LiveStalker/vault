@@ -35,7 +35,8 @@ class MastersController < ApplicationController
     digest = Digest::MD5.hexdigest(password)
     master_digest = MasterPassword.find_by(:project_id => @project)
     if digest == master_digest.password
-      Rails.cache.write(:master, password, expires_in: 1.minute)
+      expires_in = Setting.plugin_password_vault['VAULT_IDLE'].to_i
+      Rails.cache.write(:master, password, expires_in: expires_in.minute)
       redirect_to project_vaults_path
     else
       flash[:error] = 'Wrong master password!'

@@ -53,7 +53,8 @@ class VaultsController < ApplicationController
     @vault.user = User.current
     @vault.private = false
     # refresh cache
-    Rails.cache.write(:master, @master, expires_in: 1.minute)
+    expires_in = Setting.plugin_password_vault['VAULT_IDLE'].to_i
+    Rails.cache.write(:master, @master, expires_in: expires_in.minute)
     if @vault.save
       # save successfully
       flash[:notice] = 'Password successfully added to vault.'
@@ -74,7 +75,8 @@ class VaultsController < ApplicationController
     form_params[:password] = vault_encrypt(form_params[:password], @master)
     @vault.assign_attributes(form_params)
     # refresh cache
-    Rails.cache.write(:master, @master, expires_in: 1.minute)
+    expires_in = Setting.plugin_password_vault['VAULT_IDLE'].to_i
+    Rails.cache.write(:master, @master, expires_in: expires_in.minute)
     if @vault.valid? and (request.patch? and @vault.save)
       # save successfully
       flash[:notice] = 'Password successfully added to vault.'
