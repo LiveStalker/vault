@@ -20,8 +20,10 @@
               <td><%= password.host %></td>
               <td><%= vault_decrypt(password.login, @master) %></td>
               <td>
-                <span class="vault-password"><%= vault_decrypt(password.password, @master) %></span>
-                <!--a href="#" title="copy" class="icon icon-copy password-copy"></a--><a href="#" title="show/hide" class="icon icon-unlock password-lock"></a>
+                <span class="vault-password">
+                  <%= vault_decrypt(password.password, @master) %>
+                </span>
+                <a href="#" title="copy" class="icon icon-copy password-copy" data-clipboard-text="<%= vault_decrypt(password.password, @master) %>"></a><a href="#" title="show/hide" class="icon icon-unlock password-lock"></a>
               </td>
               <td><%= password.user %></td>
               <td><%= password.notes %></td>
@@ -37,5 +39,6 @@
 <% end %>
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'vaults', :plugin => 'password_vault' %>
+    <%= javascript_include_tag 'clipboard.min', :plugin => 'password_vault' %>
     <%= javascript_include_tag 'vaults', :plugin => 'password_vault' %>
 <% end %>

@@ -18,4 +18,6 @@ $(function () {
             target.toggleClass('icon-unlock', true);
         }
     });
+    var btn = document.querySelectorAll('.password-copy');
+    var clipboard = new Clipboard(btn);
 });
