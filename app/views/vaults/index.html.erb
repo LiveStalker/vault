@@ -28,7 +28,8 @@
               <td><%= password.user %></td>
               <td><%= password.notes %></td>
               <td>
-                <%= link_to "", {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
+                <%= link_to '', {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
+                <%= link_to '', {:action => 'destroy', :id => password.id}, :method => :delete, :class => 'icon icon-del', data: { confirm: 'Delete password?' } %>
                 <!--a href="#" class="icon icon-del">Delete</a-->
               </td>
             </tr>
