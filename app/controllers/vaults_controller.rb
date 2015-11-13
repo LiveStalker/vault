@@ -46,6 +46,13 @@ class VaultsController < ApplicationController
 
   def create
     @master = params[:vault][:master]
+    # test cache
+    master_from_cache = read_master_cache(User.current.id)
+    if master_from_cache != @master
+      flash[:error] = 'Somebody change master password. Please enter new master password and try again create/update.'
+      redirect_to ('/projects/' + @project.identifier + '/decrypt') and return
+    end
+    # end test cache
     form_params = vault_params
     # encrypt login and password
     form_params[:login] = vault_encrypt(form_params[:login], @master)
@@ -62,7 +69,7 @@ class VaultsController < ApplicationController
     if @vault.save
       # save successfully
       flash[:notice] = 'Password successfully added to vault.'
-      redirect_to project_vaults_path
+      redirect_to(project_vaults_path) and return
     else
       # validation fail
       @vault.login = vault_decrypt(@vault.login, @master)
@@ -74,6 +81,13 @@ class VaultsController < ApplicationController
   def update
     @vault = Vault.find(params[:id])
     @master = params[:vault][:master]
+    # test cache
+    master_from_cache = read_master_cache(User.current.id)
+    if master_from_cache != @master
+      flash[:error] = 'Somebody change master password. Please enter new master password and try again create/update.'
+      redirect_to('/projects/' + @project.identifier + '/decrypt') and return
+    end
+    # end test cache
     form_params = vault_params
     form_params[:login] = vault_encrypt(form_params[:login], @master)
     form_params[:password] = vault_encrypt(form_params[:password], @master)
@@ -87,7 +101,7 @@ class VaultsController < ApplicationController
       # save successfully
       flash[:notice] = 'Password successfully added to vault.'
       flash[:notice] = 'Password successfully updated.'
-      redirect_to project_vaults_path
+      redirect_to(project_vaults_path) and return
     else
       # validation fail
       @vault.login = vault_decrypt(@vault.login, @master)
@@ -135,4 +149,11 @@ class VaultsController < ApplicationController
     @project = Project.find(params[:project_id])
   end
 
+  def test_master_before_create(id, master)
+    master_from_cache = read_master_cache(id)
+    if master_from_cache != master
+      flash[:error] = 'Somebody change master password. Please enter new master password and try again create/update.'
+      redirect_to ('/projects/' + @project.identifier + '/decrypt') and return
+    end
+  end
 end

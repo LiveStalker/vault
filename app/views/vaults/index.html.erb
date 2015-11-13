@@ -1,7 +1,6 @@
-<%= render :partial => 'nav' %>
-
-<h2>Password Vault</h2>
 <% if @master_password %>
+    <%= render :partial => 'nav' %>
+    <h2>Password Vault</h2>
     <div class="autoscroll">
       <table class="list vault">
         <thead>
@@ -36,10 +35,10 @@
         </tbody>
       </table>
     </div>
+    <div class="contextual">
+      <%= link_to('Change master password', {:action => 'change_master', :controller => 'masters'}, :class => 'icon icon-passwd') %>
+    </div>
 <% end %>
-<div class="contextual">
-  <%= link_to('Change master password', {:action => 'change_master', :controller => 'masters'}, :class => 'icon icon-passwd') %>
-</div>
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'vaults', :plugin => 'password_vault' %>
     <%= javascript_include_tag 'clipboard.min', :plugin => 'password_vault' %>
