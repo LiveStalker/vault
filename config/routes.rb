@@ -8,3 +8,5 @@ end
 
 get 'projects/:project_id/decrypt', :to => 'masters#decrypt'
 post 'projects/:project_id/decrypt', :to=> 'masters#decrypt_post'
+get 'projects/:project_id/change-master', :to => 'masters#change_master'
+post 'projects/:project_id/change-master', :to => 'masters#change_master_post'

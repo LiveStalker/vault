@@ -44,6 +44,36 @@ class MastersController < ApplicationController
     end
   end
 
+  # form for change  master password
+  def change_master
+    @master = Rails.cache.read(:master)
+    if @master.nil?
+      # no master in cache
+      redirect_to '/projects/' + @project.identifier + '/decrypt'
+    else
+      @change_password = MasterPassword.new
+    end
+  end
+
+  # decrypt/encrypt change master password
+  def change_master_post
+    passwords = params[:master_password]
+    old_password = passwords[:old_password]
+    old_password_digest1 = Digest::MD5.hexdigest(old_password)
+    old_password_digest2 = MasterPassword.find_by(:project_id => @project).password
+    if (old_password_digest1 == old_password_digest2 and passwords[:new_password] == passwords[:password_repeat])
+      # decrypt-encrypt all passwords
+      @vault_passwords = Vault.where(:project => @project).all
+      # save new password digest
+      digest = Digest::MD5.hexdigest(passwords[:new_password])
+      flash[:notice] = 'Master password changed. Do not forget announce a new password to your employees.'
+      redirect_to project_vaults_path
+    else
+      flash[:error] = 'Password mismatch.'
+      redirect_to project_vaults_path
+    end
+  end
+
   # get params for creating new master password
   def master_params
     params.require(:master_password).permit(:password)

@@ -29,8 +29,7 @@
               <td><%= password.notes %></td>
               <td>
                 <%= link_to '', {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
-                <%= link_to '', {:action => 'destroy', :id => password.id}, :method => :delete, :class => 'icon icon-del', data: { confirm: 'Delete password?' } %>
-                <!--a href="#" class="icon icon-del">Delete</a-->
+                <%= link_to '', {:action => 'destroy', :id => password.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete password?'} %>
               </td>
             </tr>
         <% end %>
@@ -38,6 +37,9 @@
       </table>
     </div>
 <% end %>
+<div class="contextual">
+  <%= link_to('Change master password', {:action => 'change_master', :controller => 'masters'}, :class => 'icon icon-passwd') %>
+</div>
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'vaults', :plugin => 'password_vault' %>
     <%= javascript_include_tag 'clipboard.min', :plugin => 'password_vault' %>

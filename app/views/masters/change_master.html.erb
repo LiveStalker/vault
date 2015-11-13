@@ -1,0 +1,9 @@
+<%= labelled_form_for @change_password, :url => '/projects/' + @project.identifier + '/change-master', :html => {:id => 'change-master-form'} do |f| %>
+    <%= error_messages_for @change_password %>
+    <div class="box tabular">
+      <p><%= f.text_field :old_password, :require => true, :value => '' %></p>
+      <p><%= f.text_field :new_password, :require => true, :value => '' %></p>
+      <p><%= f.text_field :password_repeat, :require => true, :value => '' %></p>
+    </div>
+    <%= submit_tag 'Change' %>
+<% end %>
