@@ -11,4 +11,24 @@ module VaultsHelper
       cipher.update(Base64.decode64(value.to_s)) + cipher.final
     end
   end
+
+  def vault_encrypt(value, cipher_key)
+    if value.to_s != ''
+      cipher = OpenSSL::Cipher.new('aes-256-cbc')
+      cipher.encrypt
+      cipher.key = Digest::SHA2.digest cipher_key
+      Base64.encode64(cipher.update(value.to_s) + cipher.final)
+    end
+  end
+
+  def write_master_cache(id, value)
+    # refresh cache
+    expires_in = Setting.plugin_password_vault['VAULT_IDLE']
+    m = expires_in.to_i
+    Rails.cache.write(:"master#{id}", value, expires_in: m.minute)
+  end
+
+  def read_master_cache(id)
+    Rails.cache.read(:"master#{id}")
+  end
 end

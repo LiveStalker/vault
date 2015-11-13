@@ -1,7 +1,7 @@
 require 'digest/md5'
 class MastersController < ApplicationController
   unloadable
-
+  include VaultsHelper
   before_filter :find_project, :authorize
 
   # form for new master password for project vault
@@ -35,8 +35,9 @@ class MastersController < ApplicationController
     digest = Digest::MD5.hexdigest(password)
     master_digest = MasterPassword.find_by(:project_id => @project)
     if digest == master_digest.password
-      expires_in = Setting.plugin_password_vault['VAULT_IDLE'].to_i
-      Rails.cache.write(:master, password, expires_in: expires_in.minute)
+      #expires_in = Setting.plugin_password_vault['VAULT_IDLE'].to_i
+      #Rails.cache.write(:master, password, expires_in: expires_in.minute)
+      write_master_cache(User.current.id, password)
       redirect_to project_vaults_path
     else
       flash[:error] = 'Wrong master password!'
@@ -46,7 +47,8 @@ class MastersController < ApplicationController
 
   # form for change  master password
   def change_master
-    @master = Rails.cache.read(:master)
+    #@master = Rails.cache.read(:master)
+    @master = read_master_cache(User.current.id)
     if @master.nil?
       # no master in cache
       redirect_to '/projects/' + @project.identifier + '/decrypt'
@@ -75,9 +77,10 @@ class MastersController < ApplicationController
       digest = Digest::MD5.hexdigest(passwords[:new_password])
       old_password_digest2.update(password: digest)
       # refresh cache
-      expires_in = Setting.plugin_password_vault['VAULT_IDLE']
-      m = expires_in.to_i
-      Rails.cache.write(:master, passwords[:new_password], expires_in: m.minute)
+      #expires_in = Setting.plugin_password_vault['VAULT_IDLE']
+      #m = expires_in.to_i
+      #Rails.cache.write(:master, passwords[:new_password], expires_in: m.minute)
+      write_master_cache(User.current.id, passwords[:new_password])
       # notice
       flash[:notice] = 'Master password changed. Do not forget announce a new password to your employees.'
       redirect_to project_vaults_path
@@ -95,23 +98,5 @@ class MastersController < ApplicationController
   # find project id
   def find_project
     @project = Project.find(params[:project_id])
-  end
-
-  def vault_decrypt(value, cipher_key)
-    if value.to_s != ''
-      cipher = OpenSSL::Cipher.new('aes-256-cbc')
-      cipher.decrypt
-      cipher.key = Digest::SHA2.digest cipher_key
-      cipher.update(Base64.decode64(value.to_s)) + cipher.final
-    end
-  end
-
-  def vault_encrypt(value, cipher_key)
-    if value.to_s != ''
-      cipher = OpenSSL::Cipher.new('aes-256-cbc')
-      cipher.encrypt
-      cipher.key = Digest::SHA2.digest cipher_key
-      Base64.encode64(cipher.update(value.to_s) + cipher.final)
-    end
   end
 end
