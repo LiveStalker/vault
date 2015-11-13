@@ -60,12 +60,26 @@ class MastersController < ApplicationController
     passwords = params[:master_password]
     old_password = passwords[:old_password]
     old_password_digest1 = Digest::MD5.hexdigest(old_password)
-    old_password_digest2 = MasterPassword.find_by(:project_id => @project).password
-    if (old_password_digest1 == old_password_digest2 and passwords[:new_password] == passwords[:password_repeat])
+    old_password_digest2 = MasterPassword.find_by(:project_id => @project)
+    if (old_password_digest1 == old_password_digest2.password and passwords[:new_password] == passwords[:password_repeat])
       # decrypt-encrypt all passwords
       @vault_passwords = Vault.where(:project => @project).all
+      @vault_passwords.each do |p|
+        login = vault_decrypt(p.login, old_password)
+        password = vault_decrypt(p.password, old_password)
+        login = vault_encrypt(login, passwords[:new_password])
+        password = vault_encrypt(password, passwords[:new_password])
+        p.update(login: login, password: password)
+      end
       # save new password digest
       digest = Digest::MD5.hexdigest(passwords[:new_password])
+      old_password_digest2.password = digest
+      old_password_digest2.save
+      # refresh cache
+      expires_in = Setting.plugin_password_vault['VAULT_IDLE']
+      m = expires_in.to_i
+      Rails.cache.write(:master, passwords[:new_password], expires_in: m.minute)
+      # notice
       flash[:notice] = 'Master password changed. Do not forget announce a new password to your employees.'
       redirect_to project_vaults_path
     else
@@ -82,5 +96,23 @@ class MastersController < ApplicationController
   # find project id
   def find_project
     @project = Project.find(params[:project_id])
+  end
+
+  def vault_decrypt(value, cipher_key)
+    if value.to_s != ''
+      cipher = OpenSSL::Cipher.new('aes-256-cbc')
+      cipher.decrypt
+      cipher.key = Digest::SHA2.digest cipher_key
+      cipher.update(Base64.decode64(value.to_s)) + cipher.final
+    end
+  end
+
+  def vault_encrypt(value, cipher_key)
+    if value.to_s != ''
+      cipher = OpenSSL::Cipher.new('aes-256-cbc')
+      cipher.encrypt
+      cipher.key = Digest::SHA2.digest cipher_key
+      Base64.encode64(cipher.update(value.to_s) + cipher.final)
+    end
   end
 end
