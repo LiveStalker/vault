@@ -31,4 +31,11 @@ module VaultsHelper
   def read_master_cache(id)
     Rails.cache.read(:"master#{id}")
   end
+
+  def reset_master_cache
+    users = User.status('1').all
+    users.each do |u|
+      Rails.cache.delete(:"master#{u.id}")
+    end
+  end
 end

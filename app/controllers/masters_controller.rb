@@ -80,6 +80,7 @@ class MastersController < ApplicationController
       #expires_in = Setting.plugin_password_vault['VAULT_IDLE']
       #m = expires_in.to_i
       #Rails.cache.write(:master, passwords[:new_password], expires_in: m.minute)
+      reset_master_cache
       write_master_cache(User.current.id, passwords[:new_password])
       # notice
       flash[:notice] = 'Master password changed. Do not forget announce a new password to your employees.'
