@@ -73,8 +73,7 @@ class MastersController < ApplicationController
       end
       # save new password digest
       digest = Digest::MD5.hexdigest(passwords[:new_password])
-      old_password_digest2.password = digest
-      old_password_digest2.save
+      old_password_digest2.update(password: digest)
       # refresh cache
       expires_in = Setting.plugin_password_vault['VAULT_IDLE']
       m = expires_in.to_i
