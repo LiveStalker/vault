@@ -21,21 +21,25 @@ module VaultsHelper
     end
   end
 
-  def write_master_cache(id, value)
+  def write_master_cache(id, value, prj)
     # refresh cache
     expires_in = Setting.plugin_password_vault['VAULT_IDLE']
     m = expires_in.to_i
-    Rails.cache.write(:"master#{id}", value, expires_in: m.minute)
+    Rails.cache.write(:"master#{id}#{prj}", value, expires_in: m.minute)
   end
 
-  def read_master_cache(id)
-    Rails.cache.read(:"master#{id}")
+  def read_master_cache(id, prj)
+    Rails.cache.read(:"master#{id}#{prj}")
   end
 
-  def reset_master_cache
+  def del_master_cache(id, prj)
+    Rails.cache.delete(:"master#{id}#{prj}")
+  end
+
+  def reset_master_cache(prj)
     users = User.status('1').all
     users.each do |u|
-      Rails.cache.delete(:"master#{u.id}")
+      Rails.cache.delete(:"master#{u.id}#{prj}")
     end
   end
 end

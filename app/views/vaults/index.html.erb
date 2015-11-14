@@ -35,12 +35,19 @@
         </tbody>
       </table>
     </div>
-    <div class="contextual">
-      <%= link_to('Change master password', {:action => 'change_master', :controller => 'masters'}, :class => 'icon icon-passwd') %>
-    </div>
+    <% if User.current.admin? %>
+        <div class="contextual">
+          <%= link_to('Change master password', {:action => 'change_master', :controller => 'masters'}, :class => 'icon icon-passwd') %>
+        </div>
+    <% end %>
 <% end %>
 <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'vaults', :plugin => 'password_vault' %>
     <%= javascript_include_tag 'clipboard.min', :plugin => 'password_vault' %>
     <%= javascript_include_tag 'vaults', :plugin => 'password_vault' %>
 <% end %>
+<script type="text/javascript">
+  setTimeout(function(){
+    location = ''
+  },60000)
+</script>

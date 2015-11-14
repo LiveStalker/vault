@@ -11,10 +11,10 @@ Redmine::Plugin.register :password_vault do
        :param => :project_id
 
   project_module :vaults do
-    permission :view_passwords, {:vaults => :index, :masters => [:decrypt, :decrypt_post]}
-    permission :add_passwords, {:vaults => [:index, :new, :create], :masters => [:decrypt, :decrypt_post]}
-    permission :edit_password, {:vaults => [:index, :new, :create, :edit, :update], :masters=> [:decrypt, :decrypt_post]}
-    permission :delete_password, {:vaults => [:index, :new, :create, :edit, :update, :destroy], :masters=> [:decrypt, :decrypt_post]}
+    permission :view_passwords, {:vaults => [:index, :close_vault], :masters => [:decrypt, :decrypt_post]}
+    permission :add_passwords, {:vaults => [:index, :new, :create, :close_vault], :masters => [:decrypt, :decrypt_post]}
+    permission :edit_password, {:vaults => [:index, :new, :create, :edit, :update, :close_vault], :masters=> [:decrypt, :decrypt_post]}
+    permission :delete_password, {:vaults => [:index, :new, :create, :edit, :update, :destroy, :close_vault], :masters=> [:decrypt, :decrypt_post]}
     permission :master_password, {:masters => [:new, :create, :change_master, :change_master_post]}, :public => true
   end
 

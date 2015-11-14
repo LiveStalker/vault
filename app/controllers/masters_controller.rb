@@ -35,9 +35,7 @@ class MastersController < ApplicationController
     digest = Digest::MD5.hexdigest(password)
     master_digest = MasterPassword.find_by(:project_id => @project)
     if digest == master_digest.password
-      #expires_in = Setting.plugin_password_vault['VAULT_IDLE'].to_i
-      #Rails.cache.write(:master, password, expires_in: expires_in.minute)
-      write_master_cache(User.current.id, password)
+      write_master_cache(User.current.id, password, @project.id)
       redirect_to project_vaults_path
     else
       flash[:error] = 'Wrong master password!'
@@ -47,11 +45,13 @@ class MastersController < ApplicationController
 
   # form for change  master password
   def change_master
-    #@master = Rails.cache.read(:master)
-    @master = read_master_cache(User.current.id)
+    unless User.current.admin?
+      redirect_to(project_vaults_path) and return
+    end
+    @master = read_master_cache(User.current.id, @project.id)
     if @master.nil?
       # no master in cache
-      redirect_to '/projects/' + @project.identifier + '/decrypt'
+      redirect_to('/projects/' + @project.identifier + '/decrypt')and return
     else
       @change_password = MasterPassword.new
     end
@@ -77,11 +77,8 @@ class MastersController < ApplicationController
       digest = Digest::MD5.hexdigest(passwords[:new_password])
       old_password_digest2.update(password: digest)
       # refresh cache
-      #expires_in = Setting.plugin_password_vault['VAULT_IDLE']
-      #m = expires_in.to_i
-      #Rails.cache.write(:master, passwords[:new_password], expires_in: m.minute)
-      reset_master_cache
-      write_master_cache(User.current.id, passwords[:new_password])
+      reset_master_cache(@project.id)
+      write_master_cache(User.current.id, passwords[:new_password], @project.id)
       # notice
       flash[:notice] = 'Master password changed. Do not forget announce a new password to your employees.'
       redirect_to project_vaults_path
