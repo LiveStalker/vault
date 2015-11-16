@@ -13,7 +13,7 @@ class MastersController < ApplicationController
   def create
     passwords = params[:master_password]
     logger.info(passwords)
-    if passwords[:password] == passwords[:password_repeat]
+    if (passwords[:password] == passwords[:password_repeat] and passwords[:password] != '')
       digest = Digest::MD5.hexdigest(master_params[:password])
       logger.info(digest)
       @master_password = MasterPassword.new(:password => digest)
@@ -21,6 +21,10 @@ class MastersController < ApplicationController
       @master_password.save()
       flash[:notice] = 'Master password created.'
       redirect_to project_vaults_path
+    else
+      flash[:error] = 'Password mismatch.'
+      @master_password = MasterPassword.new
+      render :new
     end
   end
 
@@ -63,7 +67,7 @@ class MastersController < ApplicationController
     old_password = passwords[:old_password]
     old_password_digest1 = Digest::MD5.hexdigest(old_password)
     old_password_digest2 = MasterPassword.find_by(:project_id => @project)
-    if (old_password_digest1 == old_password_digest2.password and passwords[:new_password] == passwords[:password_repeat])
+    if (old_password_digest1 == old_password_digest2.password and passwords[:new_password] == passwords[:password_repeat] and passwords[:new_password] != '')
       # decrypt-encrypt all passwords
       @vault_passwords = Vault.where(:project => @project).all
       @vault_passwords.each do |p|

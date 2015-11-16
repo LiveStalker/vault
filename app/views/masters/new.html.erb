@@ -1,8 +1,8 @@
 <%= labelled_form_for @master_password, :url => project_masters_path, :html => {:id => 'master-form'} do |f| %>
     <%= error_messages_for @master_password %>
     <div class="box tabular">
-      <p><%= f.text_field :password, :require => true, :value => '' %></p>
-      <p><%= f.text_field :password_repeat, :require => true, :value => '' %></p>
+      <p><%= f.password_field :password, :require => true, :value => '' %></p>
+      <p><%= f.password_field :password_repeat, :require => true, :value => '' %></p>
     </div>
     <%= submit_tag 'Create' %>
 <% end %>

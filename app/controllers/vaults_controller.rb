@@ -47,6 +47,10 @@ class VaultsController < ApplicationController
     @master = params[:vault][:master]
     # test cache
     master_from_cache = read_master_cache(User.current.id, @project.id)
+    if master_from_cache.nil?
+      flash[:error] = 'Session expired.'
+      redirect_to ('/projects/' + @project.identifier + '/decrypt') and return
+    end
     if master_from_cache != @master
       flash[:error] = 'Somebody change master password. Please enter new master password and try again create/update.'
       redirect_to ('/projects/' + @project.identifier + '/decrypt') and return
@@ -78,6 +82,10 @@ class VaultsController < ApplicationController
     @master = params[:vault][:master]
     # test cache
     master_from_cache = read_master_cache(User.current.id, @project.id)
+    if master_from_cache.nil?
+      flash[:error] = 'Session expired.'
+      redirect_to ('/projects/' + @project.identifier + '/decrypt') and return
+    end
     if master_from_cache != @master
       flash[:error] = 'Somebody change master password. Please enter new master password and try again create/update.'
       redirect_to('/projects/' + @project.identifier + '/decrypt') and return
