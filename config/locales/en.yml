@@ -1,3 +1,4 @@
 en:
   field_password_repeat: "Repeat password"
   field_old_password: "Old password"
+  field_private: 'Private password'

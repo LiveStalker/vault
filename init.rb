@@ -1,7 +1,7 @@
 Redmine::Plugin.register :password_vault do
   name 'Password Vault plugin'
   author 'Alexey V. Grebenshchikov'
-  version '0.1.1'
+  version '0.1.7'
 
   menu :project_menu,
        :vaults,

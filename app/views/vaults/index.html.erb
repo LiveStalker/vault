@@ -1,6 +1,6 @@
 <% if @master_password %>
     <%= render :partial => 'nav' %>
-    <h2>Password Vault</h2>
+    <h2>Passwords vault</h2>
     <div class="autoscroll">
       <table class="list vault">
         <thead>
@@ -15,6 +15,42 @@
         </thead>
         <tbody>
         <% @vault_passwords.each do |password| %>
+            <tr>
+              <td><%= password.host %></td>
+              <td><%= vault_decrypt(password.login, @master) %></td>
+              <td>
+                <span class="vault-password">
+                  <%= vault_decrypt(password.password, @master) %>
+                </span>
+                <a href="#" title="copy" class="icon icon-copy password-copy" data-clipboard-text="<%= vault_decrypt(password.password, @master) %>"></a><a href="#" title="show/hide" class="icon icon-unlock password-lock"></a>
+              </td>
+              <td><%= password.user %></td>
+              <td><%= password.notes %></td>
+              <td>
+                <%= link_to '', {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
+                <%= link_to '', {:action => 'destroy', :id => password.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete password?'} %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!--private passwords-->
+    <h2>Private passwords vault</h2>
+    <div class="autoscroll">
+      <table class="list vault">
+        <thead>
+        <tr>
+          <th>Host</th>
+          <th>Login</th>
+          <th>Password</th>
+          <th>Created by</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @vault_passwords_p.each do |password| %>
             <tr>
               <td><%= password.host %></td>
               <td><%= vault_decrypt(password.login, @master) %></td>

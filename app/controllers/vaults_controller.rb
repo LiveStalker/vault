@@ -27,7 +27,8 @@ class VaultsController < ApplicationController
         # no master in cache
         redirect_to '/projects/' + @project.identifier + '/decrypt'
       else
-        @vault_passwords = Vault.where(:project => @project).all
+        @vault_passwords = Vault.where(:project => @project).where(:private => false).all
+        @vault_passwords_p = Vault.where(:project => @project).where(:user => User.current).where(:private => true).all
       end
     end
   end
@@ -58,7 +59,6 @@ class VaultsController < ApplicationController
     @vault = Vault.new(form_params)
     @vault.project = @project
     @vault.user = User.current
-    @vault.private = false
     # refresh cache
     write_master_cache(User.current.id, @master, @project.id)
     if @vault.save
@@ -129,7 +129,7 @@ class VaultsController < ApplicationController
   end
 
   def vault_params
-    params.require(:vault).permit(:host, :login, :password, :notes)
+    params.require(:vault).permit(:host, :login, :password, :notes, :private)
   end
 
   def find_project
