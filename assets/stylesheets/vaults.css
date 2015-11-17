@@ -1,3 +1,7 @@
 .vault-password {
     display: none;
 }
+
+.a-left {
+    text-align: left !important;
+}

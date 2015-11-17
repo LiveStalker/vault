@@ -16,8 +16,11 @@
         <tbody>
         <% @vault_passwords.each do |password| %>
             <tr>
-              <td><%= password.host %></td>
-              <td><%= vault_decrypt(password.login, @master) %></td>
+              <td class="a-left"><%= password.host %></td>
+              <td>
+                <%= vault_decrypt(password.login, @master) %>
+                <a href="#" title="copy" class="icon icon-copy password-copy" data-clipboard-text="<%= vault_decrypt(password.login, @master) %>"></a>
+              </td>
               <td>
                 <span class="vault-password">
                   <%= vault_decrypt(password.password, @master) %>
@@ -52,8 +55,11 @@
         <tbody>
         <% @vault_passwords_p.each do |password| %>
             <tr>
-              <td><%= password.host %></td>
-              <td><%= vault_decrypt(password.login, @master) %></td>
+              <td class="a-left"><%= password.host %></td>
+              <td>
+                <%= vault_decrypt(password.login, @master) %>
+                <a href="#" title="copy" class="icon icon-copy password-copy" data-clipboard-text="<%= vault_decrypt(password.login, @master) %>"></a>
+              </td>
               <td>
                 <span class="vault-password">
                   <%= vault_decrypt(password.password, @master) %>
