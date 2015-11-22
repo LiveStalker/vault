@@ -1,0 +1,10 @@
+<%= error_messages_for @vault %>
+
+<div class="box tabular">
+  <p><%= f.select :sitem_type, ['RDP', 'Web', 'TeamViewer', 'Other'] %></p>
+
+  <p><%= f.text_field :sitem, :require => true, :value => "#{@sitem.sitem || ''}" %></p>
+
+  <p><%= f.text_area :notes, :required => false, :value => "#{@sitem.notes || ''}", :class => 'wiki-edit' %></p>
+</div>
+

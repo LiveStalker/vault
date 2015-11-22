@@ -1,0 +1,6 @@
+<h2>Add new item</h2>
+
+<%= labelled_form_for @sitem, :url => project_vault_sitems_path(:vault_id => @vault_id), :html => {:id => 'sitem-form'} do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+    <%= submit_tag 'Create' %>
+<% end %>

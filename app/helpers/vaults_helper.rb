@@ -42,4 +42,15 @@ module VaultsHelper
       Rails.cache.delete(:"master#{u.id}#{prj}")
     end
   end
+
+  def item_output(type, value, notes)
+    if type == 'rdp'
+      return value
+    elsif type == 'web'
+      url = '<a href="' + value +'">' + value +'</a>'
+      return url.html_safe
+    else
+      return value
+    end
+  end
 end

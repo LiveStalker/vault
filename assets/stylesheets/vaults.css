@@ -5,3 +5,31 @@
 .a-left {
     text-align: left !important;
 }
+
+.sitem {
+    display: block;
+    text-align: left;
+    margin: 3px 0;
+    padding: 3px 0 3px 20px;
+}
+
+.rdp-sitem {
+    background: url(../images/rdp.png) no-repeat 0 0;
+}
+
+.web-sitem {
+    background: url(../images/web.png) no-repeat 0 0;
+}
+
+.teamviewer-sitem {
+    background: url(../images/teamviewer.png) no-repeat 0 0;
+}
+
+.other-sitem {
+    background: url(../images/host.png) no-repeat 0 0;
+}
+
+.add-sitem {
+    display: block;
+    text-align: right;
+}

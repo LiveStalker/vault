@@ -8,6 +8,7 @@
           <th>Host</th>
           <th>Login</th>
           <th>Password</th>
+          <th>Items</th>
           <th>Created by</th>
           <th>Notes</th>
           <th>Actions</th>
@@ -16,18 +17,34 @@
         <tbody>
         <% @vault_passwords.each do |password| %>
             <tr>
+              <!--hostname-->
               <td class="a-left"><%= password.host %></td>
+              <!--login-->
               <td>
                 <%= vault_decrypt(password.login, @master) %>
                 <a href="#" title="copy" class="icon icon-copy password-copy" data-clipboard-text="<%= vault_decrypt(password.login, @master) %>"></a>
               </td>
+              <!--password-->
               <td>
                 <span class="vault-password">
                   <%= vault_decrypt(password.password, @master) %>
                 </span>
                 <a href="#" title="copy" class="icon icon-copy password-copy" data-clipboard-text="<%= vault_decrypt(password.password, @master) %>"></a><a href="#" title="show/hide" class="icon icon-unlock password-lock"></a>
               </td>
+              <!--items-->
+              <td>
+                <% password.sitems.each do |item| %>
+                <span class="sitem <%= item.sitem_type %>-sitem">
+                  <%= item_output(item.sitem_type, item.sitem, item.notes) %>
+                </span>
+                <% end %>
+                <span class="add-sitem">
+                  <%= link_to '', new_project_vault_sitem_path(:vault_id => password.id), :class => 'icon icon-add' %>
+                </span>
+              </td>
+              <!--owner-->
               <td><%= password.user %></td>
+              <!--notes-->
               <td><%= password.notes %></td>
               <td>
                 <%= link_to '', {:action => 'edit', :id => password.id}, :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
@@ -89,7 +106,7 @@
     <%= javascript_include_tag 'vaults', :plugin => 'password_vault' %>
 <% end %>
 <script type="text/javascript">
-  setTimeout(function(){
+  setTimeout(function () {
     location = ''
-  },60000)
+  }, 60000)
 </script>
