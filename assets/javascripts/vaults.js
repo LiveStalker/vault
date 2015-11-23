@@ -18,6 +18,21 @@ $(function () {
             target.toggleClass('icon-unlock', true);
         }
     });
+
+    $('span.sitem').hover(
+        // hover In
+        function () {
+            var target = $(this);
+            var icons = target.find('.icon');
+            icons.show();
+        },
+        // hover Out
+        function () {
+            var target = $(this);
+            var icons = target.find('.icon');
+            icons.hide();
+        }
+    );
     var btn = document.querySelectorAll('.password-copy');
     var clipboard = new Clipboard(btn);
 
