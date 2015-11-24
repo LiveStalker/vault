@@ -33,7 +33,7 @@ span.sitem a.icon-edit {
     background: url(../images/rdp.png) no-repeat 0 0;
 }
 
-.Web-sitem {
+.HTTP-sitem, .HTTPS-sitem {
     background: url(../images/web.png) no-repeat 0 0;
 }
 

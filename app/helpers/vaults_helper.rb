@@ -44,12 +44,14 @@ module VaultsHelper
   end
 
   def item_output(type, value, notes)
-    #<a href="rdp://someserver">rdp://someserver</a>
     if type == 'RDP'
       url = '<a href="rdp://' + value + '">rdp://' + value + '</a>'
       return url.html_safe
-    elsif type == 'Web'
-      url = '<a href="' + value +'">' + value +'</a>'
+    elsif type == 'HTTP'
+      url = '<a href="http://' + value +'">' + value +'</a>'
+      return url.html_safe
+    elsif type == 'HTTPS'
+      url = '<a href="https://' + value +'">' + value +'</a>'
       return url.html_safe
     else
       return value

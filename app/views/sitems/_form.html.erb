@@ -1,7 +1,7 @@
 <%= error_messages_for @sitem %>
 
 <div class="box tabular">
-  <p><%= f.select :sitem_type, ['RDP', 'Web', 'TeamViewer', 'Other'] %></p>
+  <p><%= f.select :sitem_type, ['RDP', 'HTTP', 'HTTPS', 'TeamViewer', 'Other'] %></p>
 
   <p><%= f.text_field :sitem, :require => true, :value => "#{@sitem.sitem || ''}" %></p>
 
