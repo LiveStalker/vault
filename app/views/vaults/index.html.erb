@@ -37,7 +37,7 @@
                 <span class="sitem <%= item.sitem_type %>-sitem">
                   <%= item_output(item.sitem_type, item.sitem, item.notes) %>
                   <%= link_to '', edit_project_vault_sitem_path(:vault_id => password.id, :id => item.id), :class => 'icon icon-edit' %>
-                  <%= link_to '', {:action => 'destroy', :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
+                  <%= link_to '', {:controller=> 'sitems', :action => 'destroy', :vault_id => password.id, :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
                 </span>
                 <% end %>
                 <span class="add-sitem">
@@ -94,6 +94,8 @@
                 <% password.sitems.each do |item| %>
                 <span class="sitem <%= item.sitem_type %>-sitem">
                   <%= item_output(item.sitem_type, item.sitem, item.notes) %>
+                  <%= link_to '', edit_project_vault_sitem_path(:vault_id => password.id, :id => item.id), :class => 'icon icon-edit' %>
+                  <%= link_to '', {:controller=> 'sitems', :action => 'destroy', :vault_id => password.id, :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
                 </span>
                 <% end %>
                 <span class="add-sitem">

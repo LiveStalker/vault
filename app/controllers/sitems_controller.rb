@@ -21,6 +21,7 @@ class SitemsController < ApplicationController
   end
 
   def edit
+    @vault_id = params[:vault_id]
 
   end
 
@@ -29,7 +30,17 @@ class SitemsController < ApplicationController
   end
 
   def destroy
-
+    @master = read_master_cache(User.current.id, @project.id)
+    if @master.nil?
+      # no master in cache
+      redirect_to '/projects/' + @project.identifier + '/decrypt'
+    else
+      @sitem = Sitem.find(params[:id])
+      @sitem.delete
+      # refresh cache
+      write_master_cache(User.current.id, @master, @project.id)
+      redirect_to project_vaults_path
+    end
   end
 
   def sitem_params
