@@ -22,11 +22,20 @@ class SitemsController < ApplicationController
 
   def edit
     @vault_id = params[:vault_id]
-
+    @sitem = Sitem.find(params[:id])
   end
 
   def update
-
+    @sitem = Sitem.find(params[:id])
+    @sitem.assign_attributes(sitem_params)
+    if @sitem.valid? and (request.patch? and @sitem.save)
+      # save successfully
+      flash[:notice] = 'Item successfully updated.'
+      redirect_to(project_vaults_path) and return
+    else
+      # validation fail
+      render :edit
+    end
   end
 
   def destroy
