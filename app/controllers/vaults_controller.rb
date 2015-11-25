@@ -129,7 +129,8 @@ class VaultsController < ApplicationController
       redirect_to '/projects/' + @project.identifier + '/decrypt'
     else
       @vault = Vault.find(params[:id])
-      @vault.delete
+      #@vault.delete
+      @vault.destroy
       # refresh cache
       write_master_cache(User.current.id, @master, @project.id)
       redirect_to project_vaults_path
