@@ -5,13 +5,13 @@
       <table class="list vault">
         <thead>
         <tr>
-          <th>Host</th>
-          <th>Login</th>
-          <th>Password</th>
-          <th>Items</th>
-          <th>Created by</th>
-          <th>Notes</th>
-          <th>Actions</th>
+          <th width="20%">Host</th>
+          <th width="5%">Login</th>
+          <th width="10%">Password</th>
+          <th width="30%">Items</th>
+          <th width="20%">Created by</th>
+          <th width="20%">Notes</th>
+          <th width="5%">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -33,13 +33,23 @@
               </td>
               <!--items-->
               <td>
-                <% password.sitems.each do |item| %>
-                <span class="sitem <%= item.sitem_type %>-sitem">
-                  <%= item_output(item.sitem_type, item.sitem, item.notes) %>
-                  <%= link_to '', edit_project_vault_sitem_path(:vault_id => password.id, :id => item.id), :class => 'icon icon-edit' %>
-                  <%= link_to '', {:controller=> 'sitems', :action => 'destroy', :vault_id => password.id, :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
-                </span>
-                <% end %>
+                <table class="items">
+                  <% password.sitems.each do |item| %>
+                      <tr>
+                        <td width="70%">
+                          <span class="sitem <%= item.sitem_type %>-sitem">
+                            <%= item_output(item.sitem_type, item.sitem, item.notes) %>
+                          </span>
+                        </td>
+                        <td width="30%">
+                          <span class="sitem-actions">
+                            <%= link_to '', edit_project_vault_sitem_path(:vault_id => password.id, :id => item.id), :class => 'icon icon-edit' %>
+                            <%= link_to '', {:controller => 'sitems', :action => 'destroy', :vault_id => password.id, :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
+                          </span>
+                        </td>
+                      </tr>
+                  <% end %>
+                </table>
                 <span class="add-sitem">
                   <%= link_to '', new_project_vault_sitem_path(:vault_id => password.id), :class => 'icon icon-add' %>
                 </span>
@@ -63,13 +73,13 @@
       <table class="list vault">
         <thead>
         <tr>
-          <th>Host</th>
-          <th>Login</th>
-          <th>Password</th>
-          <th>Items</th>
-          <th>Created by</th>
-          <th>Notes</th>
-          <th>Actions</th>
+          <th width="20%">Host</th>
+          <th width="5%">Login</th>
+          <th width="10%">Password</th>
+          <th width="30%">Items</th>
+          <th width="20%">Created by</th>
+          <th width="20%">Notes</th>
+          <th width="5%">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -91,13 +101,23 @@
               </td>
               <!--items-->
               <td>
-                <% password.sitems.each do |item| %>
-                <span class="sitem <%= item.sitem_type %>-sitem">
-                  <%= item_output(item.sitem_type, item.sitem, item.notes) %>
-                  <%= link_to '', edit_project_vault_sitem_path(:vault_id => password.id, :id => item.id), :class => 'icon icon-edit' %>
-                  <%= link_to '', {:controller=> 'sitems', :action => 'destroy', :vault_id => password.id, :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
-                </span>
-                <% end %>
+                <table class="items">
+                  <% password.sitems.each do |item| %>
+                      <tr>
+                        <td width="70%">
+                          <span class="sitem <%= item.sitem_type %>-sitem">
+                            <%= item_output(item.sitem_type, item.sitem, item.notes) %>
+                          </span>
+                        </td>
+                        <td width="30%">
+                          <span class="sitem-actions">
+                            <%= link_to '', edit_project_vault_sitem_path(:vault_id => password.id, :id => item.id), :class => 'icon icon-edit' %>
+                            <%= link_to '', {:controller => 'sitems', :action => 'destroy', :vault_id => password.id, :id => item.id}, :method => :delete, :class => 'icon icon-del', data: {confirm: 'Delete item?'} %>
+                          </span>
+                        </td>
+                      </tr>
+                  <% end %>
+                </table>
                 <span class="add-sitem">
                   <%= link_to '', new_project_vault_sitem_path(:vault_id => password.id), :class => 'icon icon-add' %>
                 </span>

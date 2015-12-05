@@ -18,7 +18,7 @@ $(function () {
             target.toggleClass('icon-unlock', true);
         }
     });
-
+/*
     $('span.sitem').hover(
         // hover In
         function () {
@@ -33,6 +33,7 @@ $(function () {
             icons.hide();
         }
     );
+*/
     var btn = document.querySelectorAll('.password-copy');
     var clipboard = new Clipboard(btn);
 

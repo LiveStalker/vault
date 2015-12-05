@@ -1,5 +1,14 @@
 table.vault {
-    table-layout: fixed;
+    /*table-layout: fixed;*/
+}
+
+table.items {
+    border: none;
+    width: 100%;
+}
+
+table.items td {
+    border: none !important;
 }
 
 .vault-password {
@@ -17,8 +26,17 @@ table.vault {
     padding: 3px 0 3px 20px;
 }
 
+.sitem-actions {
+    display: block;
+    margin: 3px 0;
+    padding: 3px 0 3px 20px;
+}
+
 .sitem:hover {
-    background-color: #aaffaa;
+}
+
+table.items tr:hover {
+    background-color: #aaffaa !important;
 }
 
 span.sitem a.icon {
