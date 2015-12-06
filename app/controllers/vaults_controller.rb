@@ -8,6 +8,9 @@ class VaultsController < ApplicationController
   include VaultsHelper
   before_filter :find_project, :authorize
 
+  helper :attachments
+  include AttachmentsHelper
+
   def index
     #check that master password exist
     @master_password = MasterPassword.find_by(:project_id => @project)
@@ -68,6 +71,16 @@ class VaultsController < ApplicationController
     if @vault.save
       # save successfully
       flash[:notice] = 'Password successfully added to vault.'
+      # save attachment
+      params[:attachments].each do |attachment_param|
+        attachment = Attachment.where('filename = ?', attachment_param[1][:filename]).first
+        unless attachment.nil?
+          attachment.container_type = Vault.name
+          attachment.container_id = @vault.id
+          attachment.save
+        end
+      end
+      # end save attachment
       redirect_to(project_vaults_path) and return
     else
       # validation fail
@@ -101,6 +114,16 @@ class VaultsController < ApplicationController
       # save successfully
       flash[:notice] = 'Password successfully added to vault.'
       flash[:notice] = 'Password successfully updated.'
+      # save attachment
+      params[:attachments].each do |attachment_param|
+        attachment = Attachment.where('filename = ?', attachment_param[1][:filename]).first
+        unless attachment.nil?
+          attachment.container_type = Vault.name
+          attachment.container_id = @vault.id
+          attachment.save
+        end
+      end
+      # end save attachment
       redirect_to(project_vaults_path) and return
     else
       # validation fail
