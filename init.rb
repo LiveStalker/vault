@@ -16,6 +16,8 @@ Redmine::Plugin.register :password_vault do
     permission :edit_password, {:vaults => [:index, :new, :create, :edit, :update, :close_vault], :masters=> [:decrypt, :decrypt_post]}
     permission :delete_password, {:vaults => [:index, :new, :create, :edit, :update, :destroy, :close_vault], :masters=> [:decrypt, :decrypt_post]}
     permission :master_password, {:masters => [:new, :create, :change_master, :change_master_post]}, :public => true
+    permission :view_files, :require => :loggedin
+    permission :manage_files, :require => :loggedin
   end
 
   settings :default => {'empty' => true}, :partial => 'settings/password_vault_settings'
