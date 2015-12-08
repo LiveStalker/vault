@@ -131,6 +131,16 @@
                 <span class="add-sitem">
                   <%= link_to '', new_project_vault_sitem_path(:vault_id => password.id), :class => 'icon icon-add' %>
                 </span>
+
+                <% if password.attachments.length > 0 %>
+                    <p><b>Attachments</b></p>
+                    <p>
+                      <%= render :partial => 'attachments/links', :locals => {
+                          :attachments => password.attachments,
+                          :options => {:editable => false, :deletable => true}
+                      } %>
+                    </p>
+                <% end %>
               </td>
               <!--owner-->
               <td><%= password.user %></td>

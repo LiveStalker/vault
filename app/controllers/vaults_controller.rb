@@ -73,7 +73,12 @@ class VaultsController < ApplicationController
       flash[:notice] = 'Password successfully added to vault.'
       # save attachment
       params[:attachments].each do |attachment_param|
-        attachment = Attachment.where('filename = ?', attachment_param[1][:filename]).first
+        if attachment_param.length > 0
+          if attachment_param[1].has_key?(:token)
+            tokens = attachment_param[1][:token].split('.')
+            attachment = Attachment.find(tokens[0].to_i)
+          end
+        end
         unless attachment.nil?
           attachment.container_type = Vault.name
           attachment.container_id = @vault.id
@@ -116,7 +121,12 @@ class VaultsController < ApplicationController
       flash[:notice] = 'Password successfully updated.'
       # save attachment
       params[:attachments].each do |attachment_param|
-        attachment = Attachment.where('filename = ?', attachment_param[1][:filename]).first
+        if attachment_param.length > 0
+          if attachment_param[1].has_key?(:token)
+            tokens = attachment_param[1][:token].split('.')
+            attachment = Attachment.find(tokens[0].to_i)
+          end
+        end
         unless attachment.nil?
           attachment.container_type = Vault.name
           attachment.container_id = @vault.id
